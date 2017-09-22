@@ -1,12 +1,21 @@
 import React, { Component }  from 'react'
-import Navigation from './Navigation'
+import {Link} from 'react-router-dom'
+import {firebase, database, auth} from './Firebase'
 
 class Journal extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
       <div className="App">
-        Begin a journal entry
-        <Navigation />
+        <h3>Look at your stats</h3>
+          {this.props.userLists.map((userList, key) =>
+            <div key={key}>
+              <p>{userList.coasters.coaster}</p>
+            </div>
+          )}
       </div>
     )
   }

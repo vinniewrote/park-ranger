@@ -6,6 +6,7 @@ import CoasterSelect from './CoasterSelect'
 import AttractionSelect from './AttractionSelect'
 import RestaurantSelect from './RestaurantSelect'
 import ShopSelect from './ShopSelect'
+import Journal from './Journal'
 
 const defaultMessaging = {
   message: "Welcome. Please login for the full Park Ranger experience",
@@ -22,6 +23,7 @@ class UserLogin extends Component {
       attractions: [],
       restaurants: [],
       shops: [],
+      userLists: []
     };
   }
 
@@ -33,6 +35,7 @@ class UserLogin extends Component {
       this.getAttractionInfo();
       this.getRestaurantInfo();
       this.getShopInfo();
+      this.getUserData();
     })
 
   }
@@ -40,6 +43,12 @@ class UserLogin extends Component {
   componentDidUpdate(prevProps, prevState) {
     const prevLoggedIn = prevState && prevState.isLoggedIn;
     const loggedIn = this.state.isLoggedIn;
+  }
+  getUserData() {
+    database.ref('userStories/'+ this.state.isLoggedIn.uid).on('value', snap => {
+      console.log("user-data" + snap.val())
+      this.setState({userLists: snap.val()})
+    });
   }
 
   getCoasterInfo() {
@@ -112,6 +121,7 @@ loginWithFacebook() {
 
         {this.state.isLoggedIn &&
           <div>
+            
             <h5>{this.state.isLoggedIn.displayName}</h5>
             <h5>{this.state.isLoggedIn.email}</h5>
             <img className="avatar" src={this.state.isLoggedIn.photoURL} alt={this.state.isLoggedIn.displayName}/>

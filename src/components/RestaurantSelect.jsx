@@ -5,6 +5,21 @@ import {firebase, database, auth} from './Firebase'
 class RestaurantSelect extends Component {
   constructor(props) {
     super(props);
+    this.handleSelect = this.handleSelect.bind(this);
+    this.handleDeselect = this.handleDeselect.bind(this);
+  }
+  handleSelect(key) {
+    const currentUser = this.props.currentUser;
+    database.ref('userStories/'+ currentUser.uid + '/restaurants').push({
+      restaurant: key
+    })
+  }
+
+  handleDeselect(key) {
+    const currentUser = this.props.currentUser;
+    database.ref('userStories/'+ currentUser.uid + '/restaurants').update({
+      restaurant: null
+    })
   }
 
   render() {
@@ -16,8 +31,8 @@ class RestaurantSelect extends Component {
             <h3>{restaurant.restaurantName}</h3>
             <p>{restaurant.restaurantLocation}</p>
             <div className='logride'>
-            <button>i rode it</button>
-            <button>undo</button>
+              <button className="btn log" onClick={()=> {this.handleSelect(restaurant.restaurantName)}}>+</button>
+              <button className="btn undo" onClick={()=> {this.handleDeselect(restaurant.restaurantName)}}>-</button>
           </div>
         </div>
         )}

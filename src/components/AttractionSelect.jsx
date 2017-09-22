@@ -5,6 +5,21 @@ import {firebase, database, auth} from './Firebase'
 class AttractionSelect extends Component {
   constructor(props) {
     super(props);
+    this.handleSelect = this.handleSelect.bind(this);
+    this.handleDeselect = this.handleDeselect.bind(this);
+  }
+  handleSelect(key) {
+    const currentUser = this.props.currentUser;
+    database.ref('userStories/'+ currentUser.uid + '/attractions').push({
+      attraction: key
+    })
+  }
+
+  handleDeselect(key) {
+    const currentUser = this.props.currentUser;
+    database.ref('userStories/'+ currentUser.uid + '/attractions').update({
+      attraction: null
+    })
   }
 
   render() {
@@ -16,8 +31,8 @@ class AttractionSelect extends Component {
             <h3>{attraction.attractionName}</h3>
             <p>{attraction.attractionLocation}</p>
             <div className='logride'>
-            <button>i rode it</button>
-            <button>undo</button>
+              <button className="btn log" onClick={()=> {this.handleSelect(attraction.attractionName)}}>+</button>
+              <button className="btn undo" onClick={()=> {this.handleDeselect(attraction.attractionName)}}>-</button>
           </div>
         </div>
         )}

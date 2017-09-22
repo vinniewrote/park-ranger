@@ -5,11 +5,13 @@ import {firebase, database, auth} from './Firebase'
 class CoasterSelect extends Component {
   constructor(props) {
     super(props);
+    this.handleSelect = this.handleSelect.bind(this);
+    this.handleDeselect = this.handleDeselect.bind(this);
   }
   handleSelect(key) {
     const currentUser = this.props.currentUser;
-    database.ref('userStories/'+ currentUser.uid + '/coasters').set({
-      coaster: currentUser.displayName
+    database.ref('userStories/'+ currentUser.uid + '/coasters').push({
+      coaster: key
     })
   }
 
@@ -29,8 +31,8 @@ class CoasterSelect extends Component {
             <h3>{coaster.coasterName}</h3>
             <p>{coaster.coasterLocation}</p>
             <div className='logride'>
-            <button className="btn log" onClick={this.handleSelect.bind(this)}>+</button>
-            <button className="btn undo" onClick={this.handleDeselect.bind(this)}>-</button>
+            <button className="btn log" onClick={()=> {this.handleSelect(coaster.coasterName)}}>+</button>
+            <button className="btn undo" onClick={()=> {this.handleDeselect(coaster.coasterName)}}>-</button>
           </div>
         </div>
         )}
