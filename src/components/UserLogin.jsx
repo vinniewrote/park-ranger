@@ -7,6 +7,7 @@ import AttractionSelect from './AttractionSelect'
 import RestaurantSelect from './RestaurantSelect'
 import ShopSelect from './ShopSelect'
 import Journal from './Journal'
+import UserStats from './UserStats'
 
 const defaultMessaging = {
   message: "Welcome. Please login for the full Park Ranger experience",
@@ -23,7 +24,7 @@ class UserLogin extends Component {
       attractions: [],
       restaurants: [],
       shops: [],
-      userLists: []
+      setlists: []
     };
   }
 
@@ -46,8 +47,8 @@ class UserLogin extends Component {
   }
   getUserData() {
     database.ref('userStories/'+ this.state.isLoggedIn.uid).on('value', snap => {
-      console.log("user-data" + snap.val())
-      this.setState({userLists: snap.val()})
+      console.log(snap.val())
+      this.setState({setlists: snap.val()})
     });
   }
 
@@ -121,7 +122,7 @@ loginWithFacebook() {
 
         {this.state.isLoggedIn &&
           <div>
-            
+            <UserStats setlists={this.state.setlists}/>
             <h5>{this.state.isLoggedIn.displayName}</h5>
             <h5>{this.state.isLoggedIn.email}</h5>
             <img className="avatar" src={this.state.isLoggedIn.photoURL} alt={this.state.isLoggedIn.displayName}/>
